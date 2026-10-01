@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Nota Toko Bangunan 58mm (Full Versi)</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            background: linear-gradient(135deg, #0a0a0a, #141414, #1f1f1f);
+            color: #f5f5f5;
+            margin: 0;
+            padding: 10px;
+        }
+        .container {
+            max-width: 720px;
+            margin: auto;
+            background: #121212;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+        }
+        .container > h3 {
+            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            color: #121212;
+            margin: -15px -15px 15px;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            letter-spacing: 0.5px;
+            font-weight: bold;
+        }
+        /* Navigasi Tab */
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #4a3f1d;
+            padding-bottom: 10px;
+        }
+        .btn-tab {
+            background: #1a1a1a;
+            color: #d4af37;
+            border: 1px solid #4a3f1d;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        .btn-tab.active {
+            background: linear-gradient(135deg, #d4af37, #aa771c);
+            color: #121212;
+            border-color: #d4af37;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 11px;
+            color: #d4af37;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+            font-size: 12px;
+            background: #1a1a1a;
+            border: 1px solid #4a3f1d;
+            color: #f5f5f5;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
+        }
+        h4 {
+            color: #d4af37;
+            border-left: 5px solid #d4af37;
+            padding-left: 8px;
+            margin-top: 15px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #d4af37, #aa771c);
+            color: #121212;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn-success { background: linear-gradient(135deg,#059669,#10b981); width: 100%; padding: 12px; font-size: 14px; margin-top: 15px; border-radius: 6px; color: white; border: none; cursor: pointer;}
+        .btn-whatsapp { background: #25d366; width: 100%; padding: 12px; font-size: 14px; margin-top: 10px; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;}
+        .btn-whatsapp:hover { opacity: 0.9; }
+        .btn-copy { background: linear-gradient(135deg, #d4af37, #aa771c); width: 100%; padding: 10px; font-size: 13px; margin-top: 8px; color: #121212; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;}
+        .btn-copy:hover { opacity: 0.9; }
+        .btn-danger { background: #991b1b; padding: 4px 8px; font-size: 10px; color: white; border: none; border-radius: 3px; cursor: pointer;}
+        .btn-info { background: #0284c7; padding: 4px 8px; font-size: 10px; color: white; border: none; border-radius: 3px; cursor: pointer;}
+        
+        .quick-list-container {
+            margin-bottom: 15px;
+            background: #171717;
+            border: 1px solid #4a3f1d;
+            padding: 10px;
+            max-height: 280px;
+            overflow-y: auto;
+            border-radius: 5px;
+        }
+        .quick-category {
+            margin: 8px 0 5px;
+            padding: 6px 8px;
+            color: #121212;
+            background: linear-gradient(90deg, #d4af37, #fcf6ba);
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        .btn-quick {
+            background: #1f1f1f;
+            border: 1px solid #4a3f1d;
+            color: #f5f5f5;
+            min-height: 34px;
+            padding: 6px 10px;
+            margin: 3px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            display: inline-block;
+            transition: .15s;
+        }
+        .btn-quick:hover {
+            background: #d4af37;
+            color: #121212;
+            border-color: #d4af37;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        table.input-table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+        table.input-table th, table.input-table td {
+            border: 1px solid #4a3f1d;
+            padding: 5px;
+            font-size: 11px;
+            text-align: center;
+        }
+        table.input-table th {
+            background: #1f1f1f;
+            color: #d4af37;
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+        .badge-lunas { background: #065f46; color: #34d399; }
+        .badge-piutang { background: #7f1d1d; color: #fca5a5; }
+
+        /* PENGATURAN CETAK THERMAL 58MM - 1 LEMBAR PAS (PAGE-BREAK KONTROL) */
+        @media print {
+            body, html {
+                width: 58mm;
+                margin: 0;
+                padding: 0;
+                background: #fff !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #printArea, #printArea * {
+                visibility: visible;
+            }
+            #printArea {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 54mm !important;
+                margin: 0 !important;
+                padding: 2mm !important;
+                background: #fff !important;
+                color: #000 !important;
+                page-break-after: avoid !important;
+                page-break-inside: avoid !important;
+                break-after: avoid !important;
+                break-inside: avoid !important;
+            }
+            @page {
+                size: 58mm auto;
+                margin: 0;
+            }
+        }
+
+        @media(max-width:100px){
+            .container { max-width: 100%; }
+            .btn-quick { width: calc(50% - 8px); margin: 3px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h3>Aplikasi Nota Toko Bangunan 58mm (Full Versi)</h3>
+    
+    <!-- Navigasi Menu Tab -->
+    <div class="nav-tabs">
+        <button class="btn-tab active" onclick="switchTab('tabNota', event)">📝 Buat Nota</button>
+        <button class="btn-tab" onclick="switchTab('tabRiwayat', event)">📊 Riwayat Transaksi</button>
+        <button class="btn-tab" onclick="switchTab('tabPiutang', event)">📒 Buku Piutang</button>
+        <button class="btn-tab" onclick="switchTab('tabMaster', event)">⚙️ Atur Barang</button>
+        <button class="btn-tab" onclick="switchTab('tabPengaturan', event)">🏪 Pengaturan Toko</button>
+        <button class="btn-tab" onclick="switchTab('tabLaporan', event)">📈 Laporan & Kasir</button>
+    </div>
+
+    <!-- TAB 1: BUAT NOTA -->
+    <div id="tabNota" class="tab-content active">
+        <div class="row-flex" style="display:flex; gap:10px;">
+            <div class="form-group" style="flex:1;">
+                <label>Nama Toko:</label>
+                <input type="text" id="namaToko" value="MUNGKUR HABANG JAYA">
+            </div>
+            <div class="form-group" style="flex:1;">
+                <label>Catatan Nota (Opsional):</label>
+                <input type="text" id="catatanNota" value="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Alamat Toko & Kontak:</label>
+            <input type="text" id="alamatToko" value="Jl. Ahmad Yani, Desa Banyu Landas, Telp. 0811 5220 1193">
+        </div>
+
+        <div class="row-flex" style="display:flex; gap:10px;">
+            <div class="form-group" style="flex:1;">
+                <label>Tanggal Transaksi:</label>
+                <input type="date" id="tanggalNota">
+            </div>
+            <div class="form-group" style="flex:1;">
+                <label>Jam Transaksi:</label>
+                <input type="text" id="jamNota" placeholder="Otomatis terisi">
+            </div>
+        </div>
+
+        <div class="row-flex" style="display:flex; gap:10px;">
+            <div class="form-group" style="flex:2;">
+                <label>Atas Nama Pemesan:</label>
+                <input type="text" id="namaPemesan" placeholder="Contoh: Bpk. Fendi / Toko Mungkur">
+            </div>
+            <div class="form-group" style="flex:1;">
+                <label>Kasir / Operator:</label>
+                <input type="text" id="namaKasir" value="Admin">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Nomor WhatsApp Tujuan (Opsional, misal: 628123456789):</label>
+            <input type="text" id="noWhatsApp" placeholder="Kosongkan jika ingin memilih kontak manual nanti">
+        </div>
+
+        <hr style="border-color: #4a3f1d;">
+        
+        <h4>Pilih Cepat Barang (Klik untuk Otomatis Isi Nama & Harga):</h4>
+        <div class="form-group">
+            <input type="text" id="searchQuickBarang" placeholder="🔍 Cari nama barang cepat..." oninput="filterQuickList()">
+        </div>
+        <div class="quick-list-container" id="quickList"></div>
+
+        <h4>Tambah Barang Belanjaan:</h4>
+        <div class="form-group">
+            <label>Nama Barang (Bisa dikosongkan):</label>
+            <input type="text" id="namaBarang" placeholder="Contoh: Semen Tiga Roda / Besi 10mm">
+        </div>
+        <div class="form-group">
+            <label>Jumlah (Qty) & Satuan:</label>
+            <div style="display:flex; gap:6px;">
+                <input type="number" id="jumlahBarang" min="0" step="any" style="flex:1;" placeholder="Qty">
+                <select id="satuanBarang" style="flex:1;" onchange="toggleSatuanManual()">
+                    <option value="">-- Tanpa Satuan --</option>
+                    <option value="Batang">batang</option>
+                    <option value="Pcs">pcs</option>
+                    <option value="Sak">sak</option>
+                    <option value="Meter">meter</option>
+                    <option value="Kg">kg</option>
+                    <option value="Kotak">kotak</option>
+                    <option value="Pickup">pickup</option>
+                    <option value="Roll">roll</option>
+                    <option value="Set">set</option>
+                    <option value="Manual">-- Manual --</option>
+                </select>
+                <input type="text" id="satuanManual" placeholder="Satuan manual" style="flex:1; display:none;" maxlength="20">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Harga Satuan / Subtotal (Rp):</label>
+            <input type="number" id="hargaBarang" placeholder="Contoh: 60000">
+        </div>
+        <button class="btn" onclick="tambahItem()">+ Tambah ke Daftar</button>
+
+        <table class="input-table" id="tabelInput">
+            <thead>
+                <tr>
+                    <th>Barang</th>
+                    <th>Qty</th>
+                    <th>Harga</th>
+                    <th>Subtotal</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="row-flex" style="display:flex; gap:10px; margin-top: 15px;">
+            <div class="form-group" style="flex:1;">
+                <label>Diskon Nota (Rp):</label>
+                <input type="number" id="diskonNota" value="0" oninput="hitungKembalian()">
+            </div>
+            <div class="form-group" style="flex:1;">
+                <label>Uang Tunai Dibayar (Rp):</label>
+                <input type="number" id="uangBayar" oninput="hitungKembalian()">
+            </div>
+        </div>
+        
+        <p><strong>Subtotal Belanja: Rp <span id="displaySubtotal">0</span></strong></p>
+        <p><strong>Total Setelah Diskon: Rp <span id="displayTotal">0</span></strong></p>
+        <p id="containerKembaliLabel"><strong>Kembalian: Rp <span id="displayKembali">0</span></strong></p>
+        <div id="statusBadgeContainer"></div>
+
+        <!-- Area Khusus Cetak Nota Thermal 58mm (Dioptimalkan Agar Padat 1 Lembar) -->
+        <div class="print-area" id="printArea" style="display:none;">
+            <div style="text-align: center; font-weight: bold; font-size: 13px;" id="pNamaToko"></div>
+            <div style="text-align: center; font-size: 8px; margin-bottom: 2px;" id="pAlamatToko"></div>
+            <div style="border-bottom: 1px dashed #000; margin-bottom: 3px;"></div>
+            <div style="font-size: 8px; display: flex; justify-content: space-between;"><span id="pTanggal"></span><span id="pJam"></span></div>
+            <div style="font-size: 8px; display: flex; justify-content: space-between;"><span id="pKasir"></span><span id="pIDNota"></span></div>
+            <div style="font-size: 9px; font-weight: bold; margin-bottom: 2px;" id="pPemesan"></div>
+            <div style="border-bottom: 1px dashed #000; margin-bottom: 3px;"></div>
+            <div id="pDaftarItem" style="font-size: 9px; line-height: 1.1;"></div>
+            <div style="border-bottom: 1px dashed #000; margin: 3px 0;"></div>
+            <div style="font-size: 9px; display: flex; justify-content: space-between;"><span>Subtotal:</span><span id="pSubtotal"></span></div>
+            <div style="font-size: 9px; display: flex; justify-content: space-between;" id="pBarisDiskon"><span>Diskon:</span><span id="pDiskon"></span></div>
+            <div style="font-size: 10px; display: flex; justify-content: space-between; font-weight: bold;"><span>TOTAL:</span><span id="pTotal"></span></div>
+            <div style="font-size: 8px; display: flex; justify-content: space-between;"><span>Bayar:</span><span id="pBayar"></span></div>
+            <div style="font-size: 8px; display: flex; justify-content: space-between; margin-bottom: 2px;"><span id="pLabelKembaliKurang">Kembali:</span><span id="pKembali"></span></div>
+            <div style="font-size: 9px; font-weight: bold; text-align: center; margin: 2px 0;" id="pStatusNota"></div>
+            <div style="border-bottom: 1px dashed #000; margin-bottom: 3px;"></div>
+            <div style="text-align: center; font-size: 7px;" id="pInfoBank">Pembayaran VIA Transfer Bank BRI</div>
+            <div style="text-align: center; font-size: 7px;" id="pInfoRek">Rina Herliani - 773101010543539</div>
+            <div style="text-align: center; font-size: 7px; margin-top: 2px;" id="pFooterTeks">Terima Kasih Telah Berbelanja!</div>
+            <div style="text-align: center; font-size: 6px; font-style: italic; margin-top: 2px;" id="pCatatanKaki"></div>
+        </div>
+
+        <button class="btn btn-success" onclick="simpanDanCetakNota()">Cetak Nota ke Printer (1 Lembar)</button>
+        <button class="btn-whatsapp" onclick="simpanDanKirimGambar()">🖼 Kirim Nota Gambar ke WA</button>
+        <button class="btn-copy" onclick="salinTeksWa()">📋 Salin Teks Rincian ke Clipboard</button>
+        <button class="btn" style="background:#4b5563; color:#fff; width:100%; margin-top:8px;" onclick="resetFormNota()">🔄 Reset / Nota Baru</button>
+    </div>
+
+    <!-- TAB 2: RIWAYAT TRANSAKSI -->
+    <div id="tabRiwayat" class="tab-content">
+        <h4>Daftar Riwayat Transaksi Tersimpan</h4>
+        <div class="row-flex" style="display:flex; gap:10px; margin-bottom: 10px;">
+            <input type="text" id="cariRiwayat" placeholder="🔍 Cari nama pemesan atau tanggal..." oninput="renderRiwayat()" style="flex:2;">
+            <button class="btn btn-danger" onclick="hapusSemuaRiwayat()" style="flex:1;">Hapus Semua</button>
+        </div>
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table class="input-table" id="tabelRiwayat">
+                <thead>
+                    <tr>
+                        <th>Waktu</th>
+                        <th>Pemesan</th>
+                        <th>Total (Rp)</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 3: BUKU PIUTANG -->
+    <div id="tabPiutang" class="tab-content">
+        <h4>Buku Kas Bon / Pelanggan Belum Lunas</h4>
+        <p style="font-size: 11px; color: #a3a3a3;">Daftar pelanggan dengan kekurangan pembayaran (Piutang).</p>
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table class="input-table" id="tabelPiutang">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Pemesan</th>
+                        <th>Kekurangan (Rp)</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 4: ATUR MASTER BARANG -->
+    <div id="tabMaster" class="tab-content">
+        <h4>Tambah / Edit Barang Cepat</h4>
+        <div class="form-group">
+            <label>Nama Barang:</label>
+            <input type="text" id="masterNamaBarang" placeholder="Contoh: Paku Beton 3 inch">
+        </div>
+        <div class="form-group">
+            <label>Kategori:</label>
+            <input type="text" id="masterKategoriBarang" placeholder="Contoh: Alat & Perlengkapan">
+        </div>
+        <div class="form-group">
+            <label>Harga Satuan (Rp):</label>
+            <input type="number" id="masterHargaBarang" placeholder="Contoh: 30000">
+        </div>
+        <button class="btn" onclick="tambahBarangMaster()">+ Simpan Barang Baru</button>
+
+        <h4 style="margin-top: 20px;">Daftar Master Barang Saat Ini</h4>
+        <div class="form-group">
+            <input type="text" id="cariMaster" placeholder="🔍 Cari master barang..." oninput="renderTabelMaster()">
+        </div>
+        <div style="max-height: 250px; overflow-y: auto;">
+            <table class="input-table" id="tabelMasterBarang">
+                <thead>
+                    <tr>
+                        <th>Nama Barang</th>
+                        <th>Kategori</th>
+                        <th>Harga (Rp)</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 5: PENGATURAN TOKO -->
+    <div id="tabPengaturan" class="tab-content">
+        <h4>Pengaturan Struk & Informasi Toko</h4>
+        <div class="form-group">
+            <label>Judul Bank Pembayaran:</label>
+            <input type="text" id="settingInfoBank" value="Pembayaran VIA Transfer Bank BRI">
+        </div>
+        <div class="form-group">
+            <label>Detail Rekening / Nama Pemilik:</label>
+            <input type="text" id="settingInfoRek" value="Rina Herliani - 773101010543539">
+        </div>
+        <div class="form-group">
+            <label>Pesan Penutup / Footer Nota:</label>
+            <input type="text" id="settingFooter" value="Terima Kasih Telah Berbelanja!">
+        </div>
+        <button class="btn" onclick="simpanPengaturanToko()">💾 Simpan Pengaturan</button>
+    </div>
+
+    <!-- TAB 6: LAPORAN & KASIR -->
+    <div id="tabLaporan" class="tab-content">
+        <h4>Ringkasan Keuangan & Penjualan</h4>
+        <div style="background:#1a1a1a; border:1px solid #4a3f1d; padding:15px; border-radius:6px; margin-bottom:15px;">
+            <p><strong>Total Omzet Transaksi:</strong> Rp <span id="laporanOmzet">0</span></p>
+            <p><strong>Total Piutang Belum Lunas:</strong> Rp <span id="laporanPiutang">0</span></p>
+            <p><strong>Jumlah Total Transaksi Tercatat:</strong> <span id="laporanJumlahTrx">0</span> struk</p>
+        </div>
+        <button class="btn" onclick="exportDataJSON()">📤 Cadangkan Data (Backup JSON)</button>
+        <button class="btn" style="background:#0284c7; color:#fff; margin-top:8px;" onclick="document.getElementById('importFile').click()">📥 Pulihkan Data (Restore)</button>
+        <input type="file" id="importFile" style="display:none" onchange="importDataJSON(event)">
+    </div>
+
+    <canvas id="canvasNota" style="display:none;"></canvas>
+</div>
+
+<script>
+    const defaultMasterBarang = [
+        { nama: "Semen Conch", harga: 68000, kategori: "Semen & Bahan" },
+        { nama: "Semen Tiga Roda", harga: 145000, kategori: "Semen & Bahan" },
+        { nama: "Cornice", harga: 85000, kategori: "Semen & Bahan" },
+        { nama: "Bataringan", harga: 9500, kategori: "Semen & Bahan" },
+        { nama: "Pasir", harga: 480000, kategori: "Semen & Bahan" },
+        { nama: "Pasir 1/2", harga: 250000, kategori: "Semen & Bahan" },
+        { nama: "Batu Split", harga: 950000, kategori: "Semen & Bahan" },
+        { nama: "Batu Split 1/2", harga: 500000, kategori: "Semen & Bahan" },
+        { nama: "Batako", harga: 3500, kategori: "Semen & Bahan" },
+        { nama: "Besi 4", harga: 23000, kategori: "Besi" },
+        { nama: "Besi 5", harga: 30000, kategori: "Besi" },
+        { nama: "Besi 6", harga: 35000, kategori: "Besi" },
+        { nama: "Besi 8 Top", harga: 55000, kategori: "Besi" },
+        { nama: "Besi 10 Top", harga: 83000, kategori: "Besi" },
+        { nama: "Besi 12", harga: 115000, kategori: "Besi" },
+        { nama: "Kawat Loket", harga: 100000, kategori: "Besi" },
+        { nama: "Kawat Loket Meteran", harga: 10000, kategori: "Besi" },
+        { nama: "Kawat Harmonika 3m", harga: 55000, kategori: "Besi" },
+        { nama: "Kawat Harmonika 5m", harga: 90000, kategori: "Besi" },
+        { nama: "Taso", harga: 109000, kategori: "Baja Ringan" },
+        { nama: "Reng Taso", harga: 60000, kategori: "Baja Ringan" },
+        { nama: "Kaso", harga: 100000, kategori: "Baja Ringan" },
+        { nama: "Reng Kaso", harga: 50000, kategori: "Baja Ringan" },
+        { nama: "Baut Taso", harga: 300, kategori: "Baja Ringan" },
+        { nama: "Baut Sekrup 1", harga: 125000, kategori: "Baja Ringan" },
+        { nama: "Baut Sekrup 1 1/4", harga: 145000, kategori: "Baja Ringan" },
+        { nama: "Baut Sekrup 1 1/2", harga: 175000, kategori: "Baja Ringan" },
+        { nama: "Baut Sekrup 2", harga: 225000, kategori: "Baja Ringan" },
+        { nama: "Seng Gajah", harga: 53000, kategori: "Atap" },
+        { nama: "Seng Fumira", harga: 77000, kategori: "Atap" },
+        { nama: "Spandek 4 Meter", harga: 192000, kategori: "Atap" },
+        { nama: "Spandek 5 Meter", harga: 240000, kategori: "Atap" },
+        { nama: "Spandek 6 Meter", harga: 288000, kategori: "Atap" },
+        { nama: "Seng Biru", harga: 48000, kategori: "Atap" },
+        { nama: "Seng Maron", harga: 48000, kategori: "Atap" },
+        { nama: "Seng Coklat", harga: 48000, kategori: "Atap" },
+        { nama: "Seng Soka Ceria", harga: 77000, kategori: "Atap" },
+        { nama: "Seng roll 30cm", harga: 13000, kategori: "Atap" },
+        { nama: "Seng roll 40cm", harga: 18000, kategori: "Atap" },
+        { nama: "Seng roll 50cm", harga: 23000, kategori: "Atap" },
+        { nama: "Seng roll 60cm", harga: 25000, kategori: "Atap" },
+        { nama: "Nok Spandek", harga: 65000, kategori: "Atap" },
+        { nama: "Pipa Quad 1/2", harga: 25000, kategori: "Pipa & Plumbing" },
+        { nama: "Pipa Quad 3/4", harga: 35000, kategori: "Pipa & Plumbing" },
+        { nama: "Pipa Quad 1", harga: 45000, kategori: "Pipa & Plumbing" },
+        { nama: "Pipa Quad 1 1/4", harga: 50000, kategori: "Pipa & Plumbing" },
+        { nama: "Pipa Quad 1 1/2", harga: 50000, kategori: "Pipa & Plumbing" },
+        { nama: "Pipa Quad 2", harga: 65000, kategori: "Pipa & Plumbing" },
+        { nama: "Pipa Quad 3", harga: 120000, kategori: "Pipa & Plumbing" },
+        { nama: "Pipa Quad 4", harga: 165000, kategori: "Pipa & Plumbing" },
+        { nama: "1/2 Pipa Quad 4", harga: 85000, kategori: "Pipa & Plumbing" },
+        { nama: "L 1/2", harga: 3000, kategori: "Pipa & Plumbing" },
+        { nama: "L 3/4", harga: 3000, kategori: "Pipa & Plumbing" },
+        { nama: "Lurus 1/2", harga: 3000, kategori: "Pipa & Plumbing" },
+        { nama: "lurus 3/4", harga: 3000, kategori: "Pipa & Plumbing" },
+        { nama: "T 1/2", harga: 3000, kategori: "Pipa & Plumbing" },
+        { nama: "T 3/4", harga: 3000, kategori: "Pipa & Plumbing" },
+        { nama: "Kran Air 1/2", harga: 20000, kategori: "Pipa & Plumbing" },
+        { nama: "Kran Air 3/4", harga: 25000, kategori: "Pipa & Plumbing" },
+        { nama: "Stop Kran besi 1/2", harga: 15000, kategori: "Pipa & Plumbing" },
+        { nama: "Stop Kran besi 3/4", harga: 20000, kategori: "Pipa & Plumbing" },
+        { nama: "Stop Kran plastik", harga: 13000, kategori: "Pipa & Plumbing" },
+        { nama: "Kalsiboard", harga: 65000, kategori: "Dinding" },
+        { nama: "Nusaboard", harga: 55000, kategori: "Dinding" },
+        { nama: "Lisplang", harga: 40000, kategori: "Dinding" },
+        { nama: "GRC 6mm", harga: 115000, kategori: "Dinding" },
+        { nama: "Plywood tipis", harga: 60000, kategori: "Dinding" },
+        { nama: "Plywood sedang", harga: 95000, kategori: "Dinding" },
+        { nama: "Plywood tebal", harga: 115000, kategori: "Dinding" },
+        { nama: "Hollow 2x4", harga: 18000, kategori: "Dinding" },
+        { nama: "Hollow 4x4", harga: 25000, kategori: "Dinding" },
+        { nama: "Avian cling 1L", harga: 85000, kategori: "Cat" },
+        { nama: "Avitex Wizz 5 Kg", harga: 175000, kategori: "Cat" },
+        { nama: "Avitex 5 Kg", harga: 185000, kategori: "Cat" },
+        { nama: "Avian 100cc", harga: 18000, kategori: "Cat" },
+        { nama: "Avian kecil", harga: 8000, kategori: "Cat" },
+        { nama: "Envi Gold", harga: 30000, kategori: "Cat" },
+        { nama: "Cendana", harga: 95000, kategori: "Cat" },
+        { nama: "Boyo", harga: 115000, kategori: "Cat" },
+        { nama: "Resvo", harga: 75000, kategori: "Cat" },
+        { nama: "Paku 1 Inch", harga: 25000, kategori: "Alat & Perlengkapan" },
+        { nama: "Paku 1 1/4 Inch", harga: 25000, kategori: "Alat & Perlengkapan" },
+        { nama: "Paku 1 1/2 Inch", harga: 25000, kategori: "Alat & Perlengkapan" },
+        { nama: "Paku 1 3/4 Inch", harga: 20000, kategori: "Alat & Perlengkapan" },
+        { nama: "Paku 2 Inch", harga: 20000, kategori: "Alat & Perlengkapan" },
+        { nama: "Paku 2 1/2 Inch", harga: 20000, kategori: "Alat & Perlengkapan" },
+        { nama: "Paku 3 Inch", harga: 20000, kategori: "Alat & Perlengkapan" },
+        { nama: "Paku 3 1/2 Inch", harga: 20000, kategori: "Alat & Perlengkapan" },
+        { nama: "Paku 4 Inch", harga: 20000, kategori: "Alat & Perlengkapan" },
+        { nama: "Mata Gerinda Potong", harga: 6000, kategori: "Alat & Perlengkapan" },
+        { nama: "Amplas lembar", harga: 5000, kategori: "Alat & Perlengkapan" },
+        { nama: "Kuas 1 Inch", harga: 5000, kategori: "Alat & Perlengkapan" },
+        { nama: "Kuas 1.5 Inch", harga: 8000, kategori: "Alat & Perlengkapan" },
+        { nama: "Kuas 2 Inch", harga: 10000, kategori: "Alat & Perlengkapan" },
+        { nama: "Kuas 2.5 Inch", harga: 13000, kategori: "Alat & Perlengkapan" },
+        { nama: "Kuas 3 Inch", harga: 15000, kategori: "Alat & Perlengkapan" },
+        { nama: "Kuas 4 Inch", harga: 25000, kategori: "Alat & Perlengkapan" },
+        { nama: "Kuas 5 Inch", harga: 35000, kategori: "Alat & Perlengkapan" },
+        { nama: "Ember", harga: 12000, kategori: "Alat & Perlengkapan" },
+        { nama: "Sekop", harga: 80000, kategori: "Alat & Perlengkapan" },
+        { nama: "Cangkul", harga: 75000, kategori: "Alat & Perlengkapan" }
+    ];
+
+    let masterBarang = JSON.parse(localStorage.getItem('tb_master_barang')) || defaultMasterBarang;
+    let daftarBelanja = [];
+    let riwayatTransaksi = JSON.parse(localStorage.getItem('tb_riwayat')) || [];
+    let pengaturanToko = JSON.parse(localStorage.getItem('tb_setting')) || {
+        infoBank: "Pembayaran VIA Transfer Bank BRI",
+        infoRek: "Rina Herliani - 773101010543539",
+        footer: "Terima Kasih Telah Berbelanja!"
+    };
+
+    window.onload = function() {
+        const now = new Date();
+        document.getElementById('tanggalNota').value = now.toISOString().split('T')[0];
+        document.getElementById('jamNota').value = now.toTimeString().split(' ')[0].substring(0, 5);
+
+        document.getElementById('settingInfoBank').value = pengaturanToko.infoBank;
+        document.getElementById('settingInfoRek').value = pengaturanToko.infoRek;
+        document.getElementById('settingFooter').value = pengaturanToko.footer;
+
+        renderQuickList();
+        renderTabelMaster();
+        renderRiwayat();
+        renderPiutang();
+        updateLaporan();
+    };
+
+    function switchTab(tabId, evt) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.btn-tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        if(evt) evt.currentTarget.classList.add('active');
+        
+        if(tabId === 'tabRiwayat') renderRiwayat();
+        if(tabId === 'tabPiutang') renderPiutang();
+        if(tabId === 'tabMaster') renderTabelMaster();
+        if(tabId === 'tabLaporan') updateLaporan();
+    }
+
+    function renderQuickList() {
+        let quickListDiv = document.getElementById('quickList');
+        quickListDiv.innerHTML = '';
+        let keyword = document.getElementById('searchQuickBarang').value.toLowerCase();
+
+        const kategori = {};
+        masterBarang.forEach(item => {
+            if (keyword && !item.nama.toLowerCase().includes(keyword) && !item.kategori.toLowerCase().includes(keyword)) return;
+            if (!kategori[item.kategori]) kategori[item.kategori] = [];
+            kategori[item.kategori].push(item);
+        });
+
+        Object.keys(kategori).forEach(namaKategori => {
+            if(kategori[namaKategori].length === 0) return;
+            let title = document.createElement('div');
+            title.className = 'quick-category';
+            title.innerText = namaKategori;
+            quickListDiv.appendChild(title);
+            kategori[namaKategori].forEach(item => {
+                let btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn-quick';
+                btn.innerText = `${item.nama} (Rp ${item.harga.toLocaleString()})`;
+                btn.onclick = () => pilihBarangCepat(item.nama, item.harga);
+                quickListDiv.appendChild(btn);
+            });
+        });
+    }
+
+    function filterQuickList() {
+        renderQuickList();
+    }
+
+    function pilihBarangCepat(nama, harga) {
+        document.getElementById('namaBarang').value = nama;
+        document.getElementById('hargaBarang').value = harga;
+        document.getElementById('jumlahBarang').value = '1';
+        document.getElementById('jumlahBarang').focus();
+    }
+
+    function toggleSatuanManual() {
+        const select = document.getElementById('satuanBarang');
+        const manual = document.getElementById('satuanManual');
+        if (select.value === 'Manual') {
+            manual.style.display = 'block';
+            manual.focus();
+        } else {
+            manual.style.display = 'none';
+            manual.value = '';
+        }
+    }
+
+    function tambahItem() {
+        let nama = document.getElementById('namaBarang').value.trim();
+        let qtyVal = document.getElementById('jumlahBarang').value.trim();
+        let qty = qtyVal === "" ? null : parseFloat(qtyVal);
+        let satuanSelect = document.getElementById('satuanBarang').value;
+        let satuan = satuanSelect === 'Manual' ? document.getElementById('satuanManual').value.trim() : satuanSelect;
+        let harga = parseInt(document.getElementById('hargaBarang').value);
+
+        if (!nama) nama = "-";
+        if (isNaN(harga) || harga <= 0) {
+            alert('Mohon isi harga / subtotal barang dengan benar!');
+            return;
+        }
+
+        let subtotal = (qty !== null && !isNaN(qty) && qty > 0) ? (qty * harga) : harga;
+        let finalQty = (qty !== null && !isNaN(qty) && qty > 0) ? qty : null;
+
+        daftarBelanja.push({ nama, qty: finalQty, satuan, harga, subtotal });
+
+        document.getElementById('namaBarang').value = '';
+        document.getElementById('jumlahBarang').value = '';
+        document.getElementById('satuanBarang').value = '';
+        document.getElementById('satuanManual').value = '';
+        document.getElementById('satuanManual').style.display = 'none';
+        document.getElementById('hargaBarang').value = '';
+
+        updateTabel();
+    }
+
+    function hapusItem(index) {
+        daftarBelanja.splice(index, 1);
+        updateTabel();
+    }
+
+    function updateTabel() {
+        let tbody = document.querySelector('#tabelInput tbody');
+        tbody.innerHTML = '';
+        let subtotalAll = 0;
+
+        daftarBelanja.forEach((item, index) => {
+            subtotalAll += item.subtotal;
+            let displayNama = item.nama === "-" ? "<i>(Tanpa Nama)</i>" : `<b>${item.nama}</b>`;
+            let displayQtySatuan = item.qty !== null ? `${item.qty} ${item.satuan}` : `-`;
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${displayNama}</td>
+                    <td>${displayQtySatuan}</td>
+                    <td><b>${item.harga.toLocaleString()}</b></td>
+                    <td><b>${item.subtotal.toLocaleString()}</b></td>
+                    <td><button class="btn btn-danger" onclick="hapusItem(${index})">X</button></td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('displaySubtotal').innerText = subtotalAll.toLocaleString();
+        hitungKembalian();
+    }
+
+    function hitungKembalian() {
+        let subtotalAll = daftarBelanja.reduce((acc, item) => acc + item.subtotal, 0);
+        let diskon = parseInt(document.getElementById('diskonNota').value) || 0;
+        let total = Math.max(0, subtotalAll - diskon);
+        let bayar = parseInt(document.getElementById('uangBayar').value) || 0;
+        let selisih = bayar - total;
+        
+        document.getElementById('displayTotal').innerText = total.toLocaleString();
+
+        let containerLabel = document.getElementById('containerKembaliLabel');
+        let containerBadge = document.getElementById('statusBadgeContainer');
+        
+        if (daftarBelanja.length > 0 && bayar > 0) {
+            if (selisih >= 0) {
+                containerLabel.innerHTML = `<strong>Kembalian: Rp <span id="displayKembali">${selisih.toLocaleString()}</span></strong>`;
+                containerBadge.innerHTML = `<span class="badge-status badge-lunas">STATUS: LUNAS</span>`;
+            } else {
+                let kurang = Math.abs(selisih);
+                containerLabel.innerHTML = `<strong>Kekurangan Bayar: Rp <span id="displayKembali" style="color: #fca5a5;">${kurang.toLocaleString()}</span></strong>`;
+                containerBadge.innerHTML = `<span class="badge-status badge-piutang">STATUS: BELUM LUNAS / KURANG (Piutang: Rp ${kurang.toLocaleString()})</span>`;
+            }
+        } else {
+            containerLabel.innerHTML = `<strong>Kembalian: Rp <span id="displayKembali">0</span></strong>`;
+            containerBadge.innerHTML = '';
+        }
+    }
+
+    function catatTransaksiKeSistem() {
+        if (daftarBelanja.length === 0) return null;
+        let subtotalAll = daftarBelanja.reduce((acc, item) => acc + item.subtotal, 0);
+        let diskon = parseInt(document.getElementById('diskonNota').value) || 0;
+        let total = Math.max(0, subtotalAll - diskon);
+        let bayar = parseInt(document.getElementById('uangBayar').value) || 0;
+        let selisih = bayar - total;
+        let status = selisih >= 0 ? "LUNAS" : "BELUM LUNAS";
+        let kekurangan = selisih < 0 ? Math.abs(selisih) : 0;
+
+        let transaksiBaru = {
+            id: Date.now(),
+            tanggal: document.getElementById('tanggalNota').value + ' ' + document.getElementById('jamNota').value,
+            pemesan: document.getElementById('namaPemesan').value.trim() || 'Umum',
+            kasir: document.getElementById('namaKasir').value.trim() || 'Admin',
+            items: [...daftarBelanja],
+            subtotal: subtotalAll,
+            diskon: diskon,
+            total: total,
+            bayar: bayar,
+            status: status,
+            kekurangan: kekurangan
+        };
+
+        riwayatTransaksi.unshift(transaksiBaru);
+        localStorage.setItem('tb_riwayat', JSON.stringify(riwayatTransaksi));
+        return transaksiBaru;
+    }
+
+    function prepDataNota() {
+        document.getElementById('pNamaToko').innerText = document.getElementById('namaToko').value;
+        document.getElementById('pAlamatToko').innerText = document.getElementById('alamatToko').value;
+        
+        let tglInput = document.getElementById('tanggalNota').value;
+        let tglFormat = tglInput ? tglInput.split('-').reverse().join('/') : '';
+        document.getElementById('pTanggal').innerText = "Tgl: " + tglFormat;
+        document.getElementById('pJam').innerText = "Jam: " + (document.getElementById('jamNota').value || '');
+        document.getElementById('pKasir').innerText = "Kasir: " + (document.getElementById('namaKasir').value || 'Admin');
+        document.getElementById('pIDNota').innerText = "ID: #" + String(Date.now()).slice(-6);
+        
+        let namaPemesan = document.getElementById('namaPemesan').value.trim();
+        let elPemesan = document.getElementById('pPemesan');
+        if (namaPemesan) {
+            elPemesan.innerText = "Pemesan: " + namaPemesan;
+            elPemesan.style.display = "block";
+        } else {
+            elPemesan.style.display = "none";
+        }
+
+        let htmlItem = "";
+        let subtotalAll = 0;
+        daftarBelanja.forEach(item => {
+            subtotalAll += item.subtotal;
+            if (item.nama !== "-") {
+                htmlItem += `<div style="font-weight: bold;">${item.nama}</div>`;
+            }
+            htmlItem += `<div style="display: flex; justify-content: space-between; padding-left: 4px;">`;
+            if (item.qty !== null) {
+                htmlItem += `<span>${item.qty} ${item.satuan} x ${item.harga.toLocaleString()}</span>`;
+            } else {
+                htmlItem += `<span>Subtotal / Item</span>`;
+            }
+            htmlItem += `<span style="font-weight: bold;">${item.subtotal.toLocaleString()}</span>`;
+            htmlItem += `</div>`;
+        });
+        document.getElementById('pDaftarItem').innerHTML = htmlItem;
+
+        let diskon = parseInt(document.getElementById('diskonNota').value) || 0;
+        let total = Math.max(0, subtotalAll - diskon);
+        let bayar = parseInt(document.getElementById('uangBayar').value) || 0;
+        let selisih = bayar - total;
+
+        document.getElementById('pSubtotal').innerText = "Rp " + subtotalAll.toLocaleString();
+        
+        let barisDiskon = document.getElementById('pBarisDiskon');
+        if(diskon > 0) {
+            barisDiskon.style.display = "flex";
+            document.getElementById('pDiskon').innerText = "Rp " + diskon.toLocaleString();
+        } else {
+            barisDiskon.style.display = "none";
+        }
+
+        document.getElementById('pTotal').innerText = "Rp " + total.toLocaleString();
+        document.getElementById('pBayar').innerText = "Rp " + bayar.toLocaleString();
+
+        let labelKembaliKurang = document.getElementById('pLabelKembaliKurang');
+        let valKembali = document.getElementById('pKembali');
+        let statusEl = document.getElementById('pStatusNota');
+
+        if (selisih >= 0) {
+            labelKembaliKurang.innerText = "Kembali:";
+            valKembali.innerText = "Rp " + selisih.toLocaleString();
+            statusEl.innerText = "** LUNAS **";
+        } else {
+            let kurang = Math.abs(selisih);
+            labelKembaliKurang.innerText = "Kurang:";
+            valKembali.innerText = "Rp " + kurang.toLocaleString();
+            statusEl.innerText = "** BELUM LUNAS / KURANG **";
+        }
+
+        document.getElementById('pInfoBank').innerText = pengaturanToko.infoBank;
+        document.getElementById('pInfoRek').innerText = pengaturanToko.infoRek;
+        document.getElementById('pFooterTeks').innerText = pengaturanToko.footer;
+        document.getElementById('pCatatanKaki').innerText = document.getElementById('catatanNota').value;
+    }
+
+    function simpanDanCetakNota() {
+        if (daftarBelanja.length === 0) {
+            alert('Daftar belanjaan masih kosong!');
+            return;
+        }
+        catatTransaksiKeSistem();
+        prepDataNota();
+        window.print();
+    }
+
+    function resetFormNota() {
+        if(daftarBelanja.length > 0 && !confirm("Buat nota baru? Daftar saat ini akan dikosongkan.")) return;
+        daftarBelanja = [];
+        document.getElementById('namaPemesan').value = '';
+        document.getElementById('noWhatsApp').value = '';
+        document.getElementById('diskonNota').value = '0';
+        document.getElementById('uangBayar').value = '';
+        document.getElementById('catatanNota').value = '';
+        updateTabel();
+    }
+
+    function generateTeksWaString() {
+        let namaToko = document.getElementById('namaToko').value;
+        let namaPemesan = document.getElementById('namaPemesan').value.trim() || 'Kak';
+        let tgl = document.getElementById('tanggalNota').value.split('-').reverse().join('/');
+        let jam = document.getElementById('jamNota').value;
+        
+        let teks = `*${namaToko}*
+`;
+        teks += `Nota: ${tgl} (${jam})
+`;
+        teks += `Pemesan: ${namaPemesan}
+`;
+        teks += `--------------------------------
+`;
+        
+        let subtotalAll = 0;
+        daftarBelanja.forEach(item => {
+            subtotalAll += item.subtotal;
+            if(item.nama !== "-") teks += `*${item.nama}*
+`;
+            if(item.qty !== null) {
+                teks += `  ${item.qty} ${item.satuan} x ${item.harga.toLocaleString()} = *${item.subtotal.toLocaleString()}*
+`;
+            } else {
+                teks += `  Subtotal = *${item.subtotal.toLocaleString()}*
+`;
+            }
+        });
+        
+        let diskon = parseInt(document.getElementById('diskonNota').value) || 0;
+        let total = Math.max(0, subtotalAll - diskon);
+        let bayar = parseInt(document.getElementById('uangBayar').value) || 0;
+        let selisih = bayar - total;
+        
+        teks += `--------------------------------
+`;
+        if(diskon > 0) {
+            teks += `Subtotal: Rp ${subtotalAll.toLocaleString()}
+`;
+            teks += `Diskon: Rp ${diskon.toLocaleString()}
+`;
+        }
+        teks += `*TOTAL:* Rp ${total.toLocaleString()}
+`;
+        teks += `Bayar: Rp ${bayar.toLocaleString()}
+`;
+        
+        if (selisih >= 0) {
+            teks += `Kembali: Rp ${selisih.toLocaleString()}
+`;
+            teks += `Status: *LUNAS*
+`;
+        } else {
+            let kurang = Math.abs(selisih);
+            teks += `Kurang Pembayaran: *Rp ${kurang.toLocaleString()}*
+`;
+            teks += `Status: *BELUM LUNAS (PIUTANG)*
+`;
+        }
+        
+        teks += `--------------------------------
+`;
+        teks += `${pengaturanToko.footer} 🙏
+`;
+        teks += `_${pengaturanToko.infoBank}: ${pengaturanToko.infoRek}_`;
+        
+        return teks;
+    }
+
+    function salinTeksWa() {
+        if (daftarBelanja.length === 0) {
+            alert('Daftar belanjaan masih kosong!');
+            return;
+        }
+        catatTransaksiKeSistem();
+        let teks = generateTeksWaString();
+        navigator.clipboard.writeText(teks).then(() => {
+            alert("Rincian nota berhasil disalin ke clipboard dan transaksi tersimpan!");
+        }).catch(err => {
+            alert("Gagal menyalin teks.");
+        });
+    }
+
+    function simpanDanKirimGambar() {
+        if (daftarBelanja.length === 0) {
+            alert('Daftar belanjaan masih kosong!');
+            return;
+        }
+        catatTransaksiKeSistem();
+        kirimNotaGambar();
+    }
+
+    function kirimNotaGambar() {
+        prepDataNota();
+        let canvas = document.getElementById('canvasNota');
+        let ctx = canvas.getContext('2d');
+
+        let scale = 2;
+        let width = 400;
+        let baseHeight = 380 + (daftarBelanja.length * 45);
+        
+        canvas.width = width * scale;
+        canvas.height = baseHeight * scale;
+        ctx.scale(scale, scale);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, width, baseHeight);
+
+        ctx.fillStyle = "#000000";
+        ctx.textAlign = "center";
+
+        ctx.font = "bold 15px 'Courier New'";
+        ctx.fillText(document.getElementById('namaToko').value, width / 2, 28);
+        ctx.font = "10px 'Courier New'";
+        ctx.fillText(document.getElementById('alamatToko').value, width / 2, 45);
+
+        drawDottedLine(ctx, 20, 58, width - 20, 58);
+
+        ctx.textAlign = "left";
+        let tglInput = document.getElementById('tanggalNota').value;
+        let tglFormat = tglInput ? tglInput.split('-').reverse().join('/') : '';
+        ctx.font = "10px 'Courier New'";
+        ctx.fillText("Tgl: " + tglFormat, 20, 75);
+        ctx.textAlign = "right";
+        ctx.fillText("Jam: " + (document.getElementById('jamNota').value || ''), width - 20, 75);
+
+        let namaPemesan = document.getElementById('namaPemesan').value.trim();
+        let currentY = 93;
+        if (namaPemesan) {
+            ctx.textAlign = "left";
+            ctx.font = "bold 11px 'Courier New'";
+            ctx.fillText("Pemesan: " + namaPemesan, 20, currentY);
+            currentY += 18;
+        }
+
+        drawDottedLine(ctx, 20, currentY, width - 20, currentY);
+        currentY += 16;
+
+        ctx.textAlign = "left";
+        ctx.font = "bold 10px 'Courier New'";
+        ctx.fillText("ITEM", 20, currentY);
+        ctx.textAlign = "right";
+        ctx.fillText("SUBTOTAL", width - 20, currentY);
+        currentY += 14;
+
+        drawDottedLine(ctx, 20, currentY, width - 20, currentY);
+        currentY += 18;
+
+        let subtotalAllCanvas = 0;
+        daftarBelanja.forEach(item => {
+            subtotalAllCanvas += item.subtotal;
+            ctx.textAlign = "left";
+            if (item.nama !== "-") {
+                ctx.font = "bold 10px 'Courier New'";
+                ctx.fillText(item.nama, 20, currentY);
+                currentY += 15;
+            }
+
+            ctx.font = "10px 'Courier New'";
+            let descText = item.qty !== null ? `   ${item.qty} ${item.satuan} x ${item.harga.toLocaleString()}` : `   (Nominal Langsung)`;
+            ctx.fillText(descText, 20, currentY);
+            
+            ctx.textAlign = "right";
+            ctx.font = "bold 10px 'Courier New'";
+            ctx.fillText(item.subtotal.toLocaleString(), width - 20, currentY);
+            currentY += 22;
+        });
+
+        drawDottedLine(ctx, 20, currentY, width - 20, currentY);
+        currentY += 18;
+
+        let diskon = parseInt(document.getElementById('diskonNota').value) || 0;
+        let total = Math.max(0, subtotalAllCanvas - diskon);
+        let bayar = parseInt(document.getElementById('uangBayar').value) || 0;
+        let selisih = bayar - total;
+
+        if(diskon > 0) {
+            ctx.font = "10px 'Courier New'";
+            ctx.textAlign = "left";
+            ctx.fillText("Subtotal:", 20, currentY);
+            ctx.textAlign = "right";
+            ctx.fillText("Rp " + subtotalAllCanvas.toLocaleString(), width - 20, currentY);
+            currentY += 16;
+            ctx.textAlign = "left";
+            ctx.fillText("Diskon:", 20, currentY);
+            ctx.textAlign = "right";
+            ctx.fillText("Rp " + diskon.toLocaleString(), width - 20, currentY);
+            currentY += 16;
+        }
+
+        ctx.font = "bold 12px 'Courier New'";
+        ctx.textAlign = "left";
+        ctx.fillText("TOTAL:", 20, currentY);
+        ctx.textAlign = "right";
+        ctx.fillText("Rp " + total.toLocaleString(), width - 20, currentY);
+        currentY += 18;
+
+        ctx.font = "10px 'Courier New'";
+        ctx.textAlign = "left";
+        ctx.fillText("Bayar:", 20, currentY);
+        ctx.textAlign = "right";
+        ctx.fillText("Rp " + bayar.toLocaleString(), width - 20, currentY);
+        currentY += 16;
+
+        ctx.textAlign = "left";
+        if (selisih >= 0) {
+            ctx.fillText("Kembali:", 20, currentY);
+            ctx.textAlign = "right";
+            ctx.fillText("Rp " + selisih.toLocaleString(), width - 20, currentY);
+        } else {
+            ctx.fillText("Kurang:", 20, currentY);
+            ctx.textAlign = "right";
+            ctx.fillText("Rp " + Math.abs(selisih).toLocaleString(), width - 20, currentY);
+        }
+        currentY += 20;
+
+        ctx.textAlign = "center";
+        ctx.font = "bold 10px 'Courier New'";
+        let statusTextCanvas = selisih >= 0 ? "** LUNAS **" : "** BELUM LUNAS / KURANG **";
+        ctx.fillText(statusTextCanvas, width / 2, currentY);
+        currentY += 22;
+
+        drawDottedLine(ctx, 20, currentY, width - 20, currentY);
+        currentY += 18;
+
+        ctx.textAlign = "center";
+        ctx.font = "9px 'Courier New'";
+        ctx.fillText(pengaturanToko.infoBank, width / 2, currentY);
+        currentY += 14;
+        ctx.fillText(pengaturanToko.infoRek, width / 2, currentY);
+        currentY += 14;
+        ctx.fillText(pengaturanToko.footer, width / 2, currentY);
+        currentY += 16;
+
+        ctx.font = "italic 8px 'Courier New'";
+        ctx.fillText(document.getElementById('catatanNota').value, width / 2, currentY);
+
+        let imageURI = canvas.toDataURL("image/png");
+        let downloadLink = document.createElement('a');
+        downloadLink.href = imageURI;
+        downloadLink.download = `Nota_${namaPemesan || 'Belanja'}.png`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        setTimeout(() => {
+            let noWa = document.getElementById('noWhatsApp').value.trim();
+            let pesanWa = encodeURIComponent(generateTeksWaString());
+            let urlWa = noWa ? `https://wa.me/${noWa}?text=${pesanWa}` : `https://wa.me/?text=${pesanWa}`;
+            if (confirm("Nota gambar telah diunduh! Buka WhatsApp sekarang untuk mengirimkannya?")) {
+                window.location.href = urlWa;
+            }
+        }, 300);
+    }
+
+    function drawDottedLine(ctx, x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = "#000000";
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    function renderRiwayat() {
+        let tbody = document.querySelector('#tabelRiwayat tbody');
+        tbody.innerHTML = '';
+        let keyword = document.getElementById('cariRiwayat').value.toLowerCase();
+
+        let filteredRiwayat = riwayatTransaksi.filter(trx => {
+            return trx.pemesan.toLowerCase().includes(keyword) || trx.tanggal.toLowerCase().includes(keyword);
+        });
+
+        if(filteredRiwayat.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="color: #777;">Belum ada riwayat transaksi.</td></tr>`;
+            return;
+        }
+        
+        filteredRiwayat.forEach((trx) => {
+            let indexReal = riwayatTransaksi.findIndex(t => t.id === trx.id);
+            let badgeClass = trx.status === 'LUNAS' ? 'badge-lunas' : 'badge-piutang';
+            tbody.innerHTML += `
+                <tr>
+                    <td>${trx.tanggal}</td>
+                    <td><b>${trx.pemesan}</b></td>
+                    <td>Rp ${trx.total.toLocaleString()}</td>
+                    <td><span class="badge-status ${badgeClass}">${trx.status}</span></td>
+                    <td><button class="btn btn-danger" onclick="hapusRiwayatItem(${indexReal})">Hapus</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function hapusRiwayatItem(index) {
+        if(confirm("Hapus catatan transaksi ini?")) {
+            riwayatTransaksi.splice(index, 1);
+            localStorage.setItem('tb_riwayat', JSON.stringify(riwayatTransaksi));
+            renderRiwayat();
+            renderPiutang();
+            updateLaporan();
+        }
+    }
+
+    function hapusSemuaRiwayat() {
+        if(confirm("Yakin ingin menghapus seluruh riwayat transaksi?")) {
+            riwayatTransaksi = [];
+            localStorage.removeItem('tb_riwayat');
+            renderRiwayat();
+            renderPiutang();
+            updateLaporan();
+        }
+    }
+
+    function renderPiutang() {
+        let tbody = document.querySelector('#tabelPiutang tbody');
+        tbody.innerHTML = '';
+        let piutangList = riwayatTransaksi.filter(trx => trx.status === 'BELUM LUNAS');
+        
+        if(piutangList.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="color: #34d399;">Aman! Tidak ada catatan piutang/kas bon saat ini.</td></tr>`;
+            return;
+        }
+
+        piutangList.forEach((trx) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${trx.tanggal}</td>
+                    <td><b>${trx.pemesan}</b></td>
+                    <td style="color: #fca5a5; font-weight: bold;">Rp ${trx.kekurangan.toLocaleString()}</td>
+                    <td><button class="btn btn-info" onclick="lunasiPiutang(${trx.id})">Lunasi</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function lunasiPiutang(id) {
+        if(confirm("Ubah status transaksi ini menjadi LUNAS?")) {
+            let trx = riwayatTransaksi.find(t => t.id === id);
+            if(trx) {
+                trx.status = 'LUNAS';
+                trx.bayar = trx.total;
+                trx.kekurangan = 0;
+                localStorage.setItem('tb_riwayat', JSON.stringify(riwayatTransaksi));
+                renderPiutang();
+                renderRiwayat();
+                updateLaporan();
+            }
+        }
+    }
+
+    function renderTabelMaster() {
+        let tbody = document.querySelector('#tabelMasterBarang tbody');
+        tbody.innerHTML = '';
+        let keyword = document.getElementById('cariMaster').value.toLowerCase();
+
+        let filteredMaster = masterBarang.filter(item => item.nama.toLowerCase().includes(keyword) || item.kategori.toLowerCase().includes(keyword));
+
+        filteredMaster.forEach((item) => {
+            let indexReal = masterBarang.findIndex(m => m.nama === item.nama && m.harga === item.harga);
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${item.nama}</b></td>
+                    <td>${item.kategori}</td>
+                    <td>Rp ${item.harga.toLocaleString()}</td>
+                    <td><button class="btn btn-danger" onclick="hapusMasterBarang(${indexReal})">Hapus</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function tambahBarangMaster() {
+        let nama = document.getElementById('masterNamaBarang').value.trim();
+        let kategori = document.getElementById('masterKategoriBarang').value.trim() || 'Umum';
+        let harga = parseInt(document.getElementById('masterHargaBarang').value);
+
+        if(!nama || isNaN(harga) || harga <= 0) {
+            alert('Mohon isi nama barang dan harga dengan benar!');
+            return;
+        }
+
+        masterBarang.push({ nama, harga, kategori });
+        localStorage.setItem('tb_master_barang', JSON.stringify(masterBarang));
+        
+        document.getElementById('masterNamaBarang').value = '';
+        document.getElementById('masterKategoriBarang').value = '';
+        document.getElementById('masterHargaBarang').value = '';
+
+        renderTabelMaster();
+        renderQuickList();
+        alert('Barang baru berhasil ditambahkan ke daftar cepat!');
+    }
+
+    function hapusMasterBarang(index) {
+        if(confirm("Hapus barang ini dari daftar master?")) {
+            masterBarang.splice(index, 1);
+            localStorage.setItem('tb_master_barang', JSON.stringify(masterBarang));
+            renderTabelMaster();
+            renderQuickList();
+        }
+    }
+
+    function simpanPengaturanToko() {
+        pengaturanToko.infoBank = document.getElementById('settingInfoBank').value;
+        pengaturanToko.infoRek = document.getElementById('settingInfoRek').value;
+        pengaturanToko.footer = document.getElementById('settingFooter').value;
+        localStorage.setItem('tb_setting', JSON.stringify(pengaturanToko));
+        alert('Pengaturan toko berhasil disimpan!');
+    }
+
+    function updateLaporan() {
+        let totalOmzet = riwayatTransaksi.reduce((acc, trx) => acc + trx.total, 0);
+        let totalPiutang = riwayatTransaksi.reduce((acc, trx) => acc + trx.kekurangan, 0);
+        document.getElementById('laporanOmzet').innerText = totalOmzet.toLocaleString();
+        document.getElementById('laporanPiutang').innerText = totalPiutang.toLocaleString();
+        document.getElementById('laporanJumlahTrx').innerText = riwayatTransaksi.length;
+    }
+
+    function exportDataJSON() {
+        let data = {
+            masterBarang,
+            riwayatTransaksi,
+            pengaturanToko
+        };
+        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+        let dlAnchor = document.createElement('a');
+        dlAnchor.setAttribute("href", dataStr);
+        dlAnchor.setAttribute("download", "backup_toko_bangunan.json");
+        document.body.appendChild(dlAnchor);
+        dlAnchor.click();
+        dlAnchor.remove();
+    }
+
+    function importDataJSON(event) {
+        let file = event.target.files[0];
+        if(!file) return;
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                let parsed = JSON.parse(e.target.result);
+                if(parsed.masterBarang) masterBarang = parsed.masterBarang;
+                if(parsed.riwayatTransaksi) riwayatTransaksi = parsed.riwayatTransaksi;
+                if(parsed.pengaturanToko) pengaturanToko = parsed.pengaturanToko;
+
+                localStorage.setItem('tb_master_barang', JSON.stringify(masterBarang));
+                localStorage.setItem('tb_riwayat', JSON.stringify(riwayatTransaksi));
+                localStorage.setItem('tb_setting', JSON.stringify(pengaturanToko));
+
+                alert('Data berhasil dipulihkan!');
+                location.reload();
+            } catch(err) {
+                alert('Gagal membaca file JSON!');
+            }
+        };
+        reader.readAsText(file);
+    }
+</script>
+
+</body>
+</html>
